@@ -1,0 +1,143 @@
+<doctype html>
+ <html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>花火との距離を求めるやつ</title>
+    <link rel="icon" href="Firework.jpg">
+    <style>
+.counting{
+          color:gray;  
+}
+
+    </style>
+</head>
+
+<body>
+<center>
+  <h1 class="heading">花火までの距離計算</h1>
+  <label>気温<input type="number" min="0" max="50" id="Degrees">℃</label><br>
+  <p id="timer1"><input type="button" onclick="TimerStart()" value="スタート"></p>
+  <p id="timer2"><input type="button" onclick="TimerStop()" value="ストップ"></p>
+  <p id="answer"></p>
+ <table border="1">
+    <tr><th>気温</th><td id="Thermometer">ㅤㅤㅤㅤㅤㅤㅤㅤ</td></tr>
+    <tr><th>空気中での音速</th><td id="Speed"></td></tr>
+    <tr><th>音が届くまでの時間</th><td id="Time"></td></tr>
+    <tr><th>花火開花までの距離</th><th id="Meter"></th></tr>
+    <tr><th>仰角</th><td id="Angle"></td></tr>
+    <tr><th>正弦（Sin）</th><td id="Sin"></td></tr>
+    <tr><th>余弦（Cos）</th><td id="Cos"></td></tr>
+    <tr><th>打上地点までの距離</th><th id="Point"></th></tr>
+    <tr><th>花火の高さ</th><th id="Height"></th></tr>
+ </table>
+ <h3 id="counting" class="counting"></h3>
+ <label>花火を見上げたときの仰角<input type="number" min="0" max="90" value="" id="rad">°<input type="button" onclick="Ratio()" value="計算"></label><br>
+ <button onclick="window.location.reload()">もう一度計算</button>
+ <h3>このサイトの使い方</h3>
+ <p>まず始めに、花火を見ている場所の気温を入力します。<br>
+     次に、花火が光った瞬間に「スタート」ボタンを押します。<br>
+     そして、花火の音が聞こえた瞬間に「ストップ」ボタンを押します。<br>
+     すると、花火の爆発した地点から現在地までの距離がわかります。<br>
+     花火を見上げて時の仰角を入力すると、現在地から花火の打上場所までの距離や<br>
+     花火の高さがわかります。角度を測るの大変ですね。<br>
+     (本来は観測者の身長等を考慮する必要がありますが、誤差ということにします)
+    </p>
+ <audio src="Firework.mp3" id="firesound"></audio>
+</center>
+<script>
+ var Degrees;
+ var Speed;
+ var Pass;
+ var Meter;
+ var ftime;
+ var fsec;
+ var fmil;
+ var fnow;
+ var snow;
+ var fsec;
+ var fmil;
+ var ftime;
+ var fntime;
+
+   function TimerStart(){
+    Degrees=document.getElementById("Degrees").value;
+   if(Degrees==""){
+     alert("気温を入力してください。");
+   }else{
+    document.getElementById("timer1").innerHTML="";
+    document.getElementById("counting").innerHTML="計測中...";
+    Speed=331.5+0.6*Degrees;
+     fnow=new Date();
+     fsec=fnow.getSeconds();
+     fmil=fnow.getMilliseconds();
+     ftime=fsec+0.001*fmil;
+    console.log("ftime="+ftime);
+   }
+   }
+  function TimerStop(){
+   if(document.getElementById("timer1").innerHTML==""){
+    document.getElementById("timer2").innerHTML="";
+    document.getElementById("counting").innerHTML="";
+     snow=new Date();
+     ssec=snow.getSeconds();
+     smil=snow.getMilliseconds();
+     stime=ssec+0.001*smil;
+    console.log("stime="+stime);
+
+    if(stime>ftime){
+      Pass=stime-ftime;
+    }else if(stime<ftime){
+      fntime=60-ftime;
+      Pass=fntime+stime;
+    }
+    Pass=Pass.toFixed(3);
+    Meter=(Pass*Speed).toFixed(0);
+    document.getElementById("Thermometer").innerHTML=Degrees+"℃";
+    document.getElementById("Speed").innerHTML=Speed+"m/s";
+    document.getElementById("Time").innerHTML=Pass+"秒";
+    document.getElementById("Meter").innerHTML=Meter+"m";
+
+    var audio=document.getElementById("firesound");
+        audio.play();
+  }else{
+    alert("スタートボタンを先に押してください");
+  }
+  }
+
+ var angle;
+ var rad;
+ var cosratio;
+ var sinratio;
+ var Point;
+ var Height;
+ 
+ function Ratio(){
+    angle=document.getElementById("rad").value;
+  if(document.getElementById("timer2").innerHTML==""){
+  if(angle>90||angle<0){
+   alert("角度は0°以上90°以下でお願いします。");
+  }else{
+    rad=angle*(Math.PI/180);
+    cosratio=Math.cos(rad);
+    Point=cosratio*Meter;
+    sinratio=Math.sin(rad);
+    Height=sinratio*Meter;
+
+    document.getElementById("Angle").innerHTML=angle+"°";
+    document.getElementById("Cos").innerHTML=cosratio.toFixed(3);
+    document.getElementById("Point").innerHTML=Point.toFixed(0)+"m";
+    document.getElementById("Sin").innerHTML=sinratio.toFixed(3);
+    document.getElementById("Height").innerHTML=Height.toFixed(0)+"m";
+  }
+}else{
+  alert("花火の時間計測を先におこなってください");
+}}
+
+
+
+</script>
+
+
+</body>
+ </html>   
+</doctype>
