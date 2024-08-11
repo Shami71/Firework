@@ -19,7 +19,34 @@ input{
       border-radius: 10px;
       border:solid 2px white;
       text-align:center;
+      font-size:180%;
+      width:auto
 }
+.ss{
+    color:#ffd700;
+}
+h1{
+   font-size:250%;
+   color:red;
+}
+h3{
+   font-size:200%;
+}
+p{
+  font-size:120%;
+  background-color: black;
+  opacity: 0.7;
+  width:fit-content;
+}
+table{
+      font-size:200%;
+      width:80%;
+      text-align: center;
+}
+label{
+      font-size:200%;
+}
+
     </style>
 </head>
 
@@ -27,7 +54,7 @@ input{
 <center>
   <h1 class="heading">花火までの距離計算</h1>
   <label>気温<input type="number" min="-41" max="41" id="Degrees" value="25">℃</label><br>
-  <p><input type="button" onclick="Change()" value="スタート" id="startstop"></p>
+  <input type="button" onclick="Change()" value="スタート" id="startstop" class="ss">
   <p id="answer"></p>
  <table border="1">
     <tr><th>気温</th><td id="Thermometer">ㅤㅤㅤㅤㅤㅤㅤㅤ</td></tr>
@@ -39,7 +66,7 @@ input{
     <tr><th>花火の高さ</th><th id="Height"></th></tr>
  </table>
  <h3 id="counting" class="counting"></h3>
- <label>花火を見上げたときの仰角<input type="number" min="0" max="90" value="" id="rad">°<input type="button" onclick="Ratio()" value="計算"></label><br>
+ <label>花火を見上げたときの仰角<input type="number" min="0" max="90" value="" id="rad">°<br><input type="button" onclick="Ratio()" value="計算" width="25%"></label><br>
  <h3>このサイトの使い方</h3>
  <p>まず始めに、花火を見ている場所の気温を入力します。<br>
      次に、花火が光った瞬間に「スタート」ボタンを押します。<br>
@@ -132,7 +159,9 @@ input{
  function Ratio(){
     angle=document.getElementById("rad").value;
   if(angle>90||angle<0){
-   alert("角度は0°以上90°以下でお願いします。");
+   alert("角度は0°以上90°以下でお願いします。(90°ってあり得ないような気もするけど...)");
+  }else if(angle="undefined"){
+   alert("角度を入力してください。");
   }else{
     rad=angle*(Math.PI/180);
     cosratio=Math.cos(rad);
